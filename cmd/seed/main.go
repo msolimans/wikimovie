@@ -14,6 +14,7 @@ import (
 	"github.com/msolimans/wikimovie/cmd"
 	"github.com/msolimans/wikimovie/pkg/appconf"
 	"github.com/msolimans/wikimovie/pkg/s3"
+	"github.com/msolimans/wikimovie/pkg/sqs"
 
 	"github.com/sirupsen/logrus"
 )
@@ -28,12 +29,35 @@ func loadConfig() *appconf.Configuration {
 	return conf
 }
 
-func uploadFile(cfg *appconf.Configuration, fixtureFileName, bucket, key string) error {
+func sendSqs(cfg *appconf.Configuration, fixtureFileName string, logger *logrus.Logger) error {
 	file, err := os.ReadFile(filepath.Join("./cmd/seed/fixtures", fixtureFileName))
 	if err != nil {
 		return err
 	}
 
+	fileStr := string(file)
+
+	client := sqs.NewSQSClient(&aws.Config{
+		Endpoint: cfg.Aws.Endpoint,
+		Region:   cfg.Aws.Region,
+	})
+	logger.Info("Publishing to queue url: ", cfg.Worker.Queue)
+
+	messageId, err := client.SendMessage(cfg.Worker.Queue, &fileStr)
+
+	if err != nil {
+		return err
+	}
+	logger.Info("MessageId", messageId)
+	return nil
+}
+
+func uploadFile(cfg *appconf.Configuration, fixtureFileName, bucket, key string, logger *logrus.Logger) error {
+	file, err := os.ReadFile(filepath.Join("./cmd/seed/fixtures", fixtureFileName))
+	if err != nil {
+		return err
+	}
+	logger.Info("Uploading file to bucket: ", cfg.Bucket)
 	client := s3.CreateS3Client(&aws.Config{
 		Endpoint: cfg.Aws.Endpoint,
 		Region:   cfg.Aws.Region,
@@ -64,7 +88,17 @@ func main() {
 			filename = args[1]
 		}
 		key := strings.Join([]string{cmd.S3KeyPrefix, cmd.S3KeyNewMoviesprefix, filename}, "/")
-		if err := uploadFile(cfg, filename, cfg.Bucket, key); err != nil {
+		if err := uploadFile(cfg, filename, cfg.Bucket, key, logger); err != nil {
+			logger.WithError(err).Fatal("execution failed")
+		}
+	//didn't test this case
+	case "sqs":
+		filename := "sqs.json"
+		if len(args) > 1 && args[1] != "" {
+			filename = args[1]
+		}
+
+		if err := sendSqs(cfg, filename, logger); err != nil {
 			logger.WithError(err).Fatal("execution failed")
 		}
 	default:
