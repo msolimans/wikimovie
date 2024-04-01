@@ -1,0 +1,105 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wikimovie-service-dpl
+  namespace: wm
+  labels:
+    app: wikimovie-service
+spec:
+  replicas: 2
+  template:
+    metadata:
+      name: wikimovie-service
+      labels:
+        app: wikimovie-service 
+    spec:
+      # serviceAccountName: "wm-svc" 
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: topology.kubernetes.io/zone
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app: wikimovie-service 
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app: wikimovie-service 
+      terminationGracePeriodSeconds: 60 
+      containers:
+        - name: wikimovie-service
+          image: "msolimans/wikimovie"
+          imagePullPolicy: IfNotPresent
+          resources: 
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+            limits: 
+              cpu: "500m"
+              memory: "500Mi"
+          envFrom:
+          - configMapRef: 
+              name: "wikimovie-service-config"
+          # - secretRef: 
+          readinessProbe:
+            httpGet:
+              path: /health/status
+              port: 8080
+            initialDelaySeconds: 2
+            timeoutSeconds: 8
+            successThreshold: 1
+            failureThreshold: 3
+            periodSeconds: 10
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: wikimovie-service
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: wikimovie-service-pdb
+  namespace: wm
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: wikimovie-service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wikimovie-service
+  namespace: wm
+  labels: 
+    load-balancer-scheme: private
+spec:
+  selector:
+    app: wikimovie-service
+  ports:
+    - port: 80
+      targetPort: 8080
+  type: ClusterIP
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: wikimovie-service
+  namespace: wm
+spec:
+  ingressClassName: "alb" #this needs alb ingress controller to be installed in eks cluster
+  rules:
+  - host: wikimovie-service.example.com #needs to be corrected
+    http:
+      paths:
+      - backend:
+          service:
+            name: wikimovie-service
+            port:
+              number: 80
+        path: /
+        pathType: Prefix

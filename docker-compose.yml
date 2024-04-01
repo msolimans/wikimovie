@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  localstack:
+    image: localstack/localstack 
+    ports:
+      - "4566:4566" #main gw 
+      - "4510-4559:4510-4559" #external services 
+      # - "4575:4575" # SQS port
+      - "4571:4571" #Elastic search 
+    environment:
+      DEBUG: 1
+      DEFAULT_REGION: "us-east-1"
+      SERVICES: "sqs,s3,es"
+      HOSTNAME_EXTERNAL: "localhost.localstack.cloud"
+      # DATA_DIR: "/tmp/localstack/data"
+    # set low grace period, since localstack takes a while to stop
+    stop_grace_period: "1s"
+    volumes:
+      # Bootstrap resources (didn't work - run scripts manually for now)
+      - ./docker-localstack-init.sh:/etc/localstack/init/ready.d/script.sh:ro
+      - ./docker-localstack-init.sh:/docker-entrypoint-initaws.d/localstack-init.sh:ro
+    # volumes:
+    #   # Here you mount your setup file so it will be executed
+    #   # when the container starts
+    #   - ./localstack-setup.sh:/etc/localstack/init/ready.d/script.sh

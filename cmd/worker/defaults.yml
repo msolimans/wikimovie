@@ -1,0 +1,28 @@
+Env: dev 
+
+Service:
+  Port: 8080
+  Timeout: 5 
+  RateLimit: 
+    Max: 20
+    ExpirationInSecs: 60
+
+ElasticSearch:
+  IdleConnTimeout: 120  #max time idle conn can be alive (seconds) 
+  MaxIdleConnsPerHost: 10 #max idle conns for host 
+  MaxIdleConns: 100 #max idle conns (total) 
+
+Aws:
+  Region: us-east-1
+
+#can be generalized to multiple workers with key/value pair and link them by keys to queues
+Worker:
+  WaitTimeSeconds: 10
+  MaxMessages: 3
+  RetryIntervals:
+    - 30
+    - 60
+    - 90
+
+bucket: wm-dev-movies-bucket
+

@@ -1,0 +1,15 @@
+# https://skaffold.dev
+apiVersion: skaffold/v2beta14
+kind: Config
+metadata:
+  name: wm-movie
+build:
+  artifacts:
+    - image: msolimans/wikimovie
+      context: .
+      docker:
+        dockerfile: Dockerfile
+deploy:
+  kubectl:
+    manifests:
+      - infra/k8s/*.yaml  

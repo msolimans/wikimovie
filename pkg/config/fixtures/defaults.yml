@@ -1,0 +1,13 @@
+Key: 
+  Foo: bar
+  Number: 5 
+  Nested: 
+    NestedId: 20
+    NestedValue: test
+
+Dummy:
+  Email: test@example.com  
+  Array: 
+    - 10
+    - 20
+ 

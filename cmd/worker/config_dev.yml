@@ -1,0 +1,15 @@
+# override 
+Elasticsearch:
+  Urls: 
+    - http://my-domain.us-east-1.es.localhost.localstack.cloud:4566
+
+Aws:
+  #localstack from docker-compose
+  Endpoint: http://localhost.localstack.cloud:4566
+  DisableSSL: true
+  S3ForcePathStyle: true #used for download only - affects on seed thu idk why 
+
+Worker:
+  Queue: http://sqs.us-east-1.localhost.localstack.cloud:4566/000000000000/wm-dev-movies-published
+
+Bucket: wm-dev-movies-bucket

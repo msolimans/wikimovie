@@ -1,0 +1,157 @@
+{
+	"info": {
+		"_postman_id": "5b615221-bcbb-4926-ace6-45693c532682",
+		"name": "Wikimovie",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "34134"
+	},
+	"item": [
+		{
+			"name": "GET /movies/:title",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}",
+						"type": "text"
+					}
+				],
+				"url": "http://{{host}}/movies/school%20parade"
+			},
+			"response": []
+		},
+		{
+			"name": "GET /movies/query?title&genre&year&cast",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {}
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}/movies/query?title=school&year=1900",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"movies",
+						"query"
+					],
+					"query": [
+						{
+							"key": "title",
+							"value": "school"
+						},
+						{
+							"key": "year",
+							"value": "1900"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /movies/year/:year",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {}
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}",
+						"type": "text"
+					}
+				],
+				"url": "http://{{host}}/movies/year/1900"
+			},
+			"response": []
+		},
+		{
+			"name": "GET /movies/cast/:cast",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {}
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}",
+						"type": "text"
+					}
+				],
+				"url": "http://{{host}}/movies/cast/nancy"
+			},
+			"response": []
+		},
+		{
+			"name": "GET /movies/genre/:genre",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {}
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}",
+						"type": "text"
+					}
+				],
+				"url": "http://{{host}}/movies/genre/adventure"
+			},
+			"response": []
+		},
+		{
+			"name": "GET health/status",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "http://{{host}}/health/status"
+			},
+			"response": []
+		},
+		{
+			"name": "GET health/report",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "http://{{host}}/health/report"
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "localhost:8080"
+		},
+		{
+			"key": "accessToken",
+			"value": "test"
+		}
+	]
+}

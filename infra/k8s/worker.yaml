@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wikimovie-worker-dpl
+  namespace: wm
+  labels:
+    app: wikimovie-worker
+spec:
+  replicas: 2
+  template:
+    metadata:
+      name: wikimovie-worker
+      labels:
+        app: wikimovie-worker
+    spec:
+      # serviceAccountName: "wm-worker" #needs to give this user access to elasstic search cluster 
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: topology.kubernetes.io/zone
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app: wikimovie-worker
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app: wikimovie-worker
+      containers:
+        - name: wikimovie-worker
+          image: "msolimans/wikimovie"
+          imagePullPolicy: IfNotPresent
+          command:
+            - "worker"
+          resources: 
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+            limits: 
+              cpu: "500m"
+              memory: "500Mi"
+          envFrom:
+          - configMapRef: 
+              name: "wikimovie-worker-config"
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: wikimovie-worker

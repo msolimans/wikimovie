@@ -1,0 +1,18 @@
+# Ignore system and editor files
+.dockerignore
+.git
+.gitignore
+.vscode
+.idea
+
+# Ignore binaries and build files
+/bin/
+/pkg/
+/vendor/
+*.exe
+*.dll
+*.so
+
+# Ignore test and coverage files
+*.test
+*.out
