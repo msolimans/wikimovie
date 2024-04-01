@@ -12,3 +12,19 @@ kind: ConfigMap
 metadata:
   name: wikimovie-service-config
   namespace: wm
+---
+# separate in case we want to deploy worker to separate namepsace
+apiVersion: v1
+data:
+  ENV: dev
+  ELASTICSEARCH_URLS: "https://domain.us-east-1.es.amazonaws.com/"
+  AWS_REGION: us-east-1
+  WORKER_QUEUE: "http://sqs.us-east-1.localhost.localstack.cloud:4566/000000000000/wm-dev-movies-published"
+  WORKER_WAIT_TIME_SECONDS: "10"
+  WORKER_MAX_MESSAGES: "3"
+  WORKER_RETRY_INTERVALS: "20,40,60"
+  BUCKET: wm-dev-movies-bucket 
+kind: ConfigMap
+metadata:
+  name: wikimovie-worker-config
+  namespace: wm
