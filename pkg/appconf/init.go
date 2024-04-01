@@ -30,7 +30,6 @@ type Configuration struct {
 	Env           Environment
 	ElasticSearch es.ESConfig
 
-	Queue  string
 	Bucket string
 	Aws    *aws.Config
 	Worker sqs.WorkerConfig

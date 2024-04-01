@@ -32,7 +32,7 @@ Notes:
 
 ### Local development
 
-In development environment, run `docker-compose` to be able to run commands on the AWS CLI against localstack.
+1) In development environment, run `docker-compose` to be able to run commands on the AWS CLI against localstack.
 
 The `AWS_ENDPOINT` and config `aws.endpoint` is only used for localstack purposes. In live environments, since these variables will be unspecified, the AWS client will automatically use the real AWS URLs.
 
@@ -48,6 +48,10 @@ Docker compose will run the following AWS services locally:
 - S3 
 - SQS
 
+2) For some reason init script was not working in my end so I had to run `./localstack.sh` manually after I spin up `localstack`  
+
+Note: to clean up resources, run `./clean.sh`
+
 #### Seeds
 To load database seeds in development, run from the root directory:
 ```
@@ -59,7 +63,22 @@ Note: we can add exxtra option of sqs here to feed with sqs fixtures directly.
 
 ## API
 
-Use the Postman file in the `postman/Wikimovie.postman_collection.json` for all supported API calls.
+Run the service by `go run ./cmd/service/main.go` if you have go or run it with docker 
+
+1) build image `docker build -t wikimovie`
+2) run `docker run -it --rm wikimovie`
+
+If you want to override env vars, check the below env vars and pass vars with `-e` to `docker run`
+
+- The image was pushed to Public `ECR`, feel free to pull this in and try if you don't want to build locally
+
+`docker run -it --rm public.ecr.aws/q6s1l7f2/wikimovie:latest`
+
+Notes: 
+
+- Default command for this image is `service` but you can override with `worker` to run an instance of worker.
+  
+- Use the Postman file in the `postman/Wikimovie.postman_collection.json` for all supported API calls.
 
 ### Environment Variables
 

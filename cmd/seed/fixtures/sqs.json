@@ -1,0 +1,10 @@
+{
+  "Attributes": {
+    "SentTimestamp": "1711981643381",
+    "ApproximateReceiveCount": "1"
+  },
+  "Body": "{\"records\": [{\"eventVersion\": \"2.1\", \"eventSource\": \"aws:s3\", \"awsRegion\": \"us-east-1\", \"eventTime\": \"2024-04-01T14:27:23.355Z\", \"eventName\": \"ObjectCreated:Put\", \"userIdentity\": {\"principalId\": \"AIDAJDPLRKLG7UEXAMPLE\"}, \"requestParameters\": {\"sourceIPAddress\": \"127.0.0.1\"}, \"responseElements\": {\"x-amz-request-id\": \"402ffbf1\", \"x-amz-id-2\": \"eftixk72aD6Ap51TnqcoF8eFidJG9Z/2\"}, \"s3\": {\"s3SchemaVersion\": \"1.0\", \"configurationId\": \"7e69037e\", \"bucket\": {\"name\": \"wm-dev-movies-bucket\", \"ownerIdentity\": {\"principalId\": \"A3NL1KOZZKExample\"}, \"arn\": \"arn:aws:s3:::wm-dev-movies-bucket\"}, \"object\": {\"key\": \"new/1900s.json\", \"sequencer\": \"0055AED6DCD90281E5\", \"size\": 106471, \"eTag\": \"73b1ea61300be35b4a25343693e82182\"}}}]}",
+  "MD5OfBody": "83193d1b14c6c2ebb36d33f765a36cb9",
+  "MessageId": "f545272d-35ab-426a-86d3-63c9800d22d4",
+  "ReceiptHandle": "NmUxYWEwZmUtYTc3Mi00ZjUxLTk5YjAtODBkOTg3MmVmZDMyIGFybjphd3M6c3FzOnVzLWVhc3QtMTowMDAwMDAwMDAwMDA6d20tZGV2LW1vdmllcy1wdWJsaXNoZWQgZjU0NTI3MmQtMzVhYi00MjZhLTg2ZDMtNjNjOTgwMGQyMmQ0IDE3MTE5ODE2OTkuMTQxODU4Mw=="
+}
