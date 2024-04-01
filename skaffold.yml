@@ -5,7 +5,7 @@ metadata:
   name: wm-movie
 build:
   artifacts:
-    - image: msolimans/wikimovie
+    - image: public.ecr.aws/q6s1l7f2/wikimovie:latest
       context: .
       docker:
         dockerfile: Dockerfile

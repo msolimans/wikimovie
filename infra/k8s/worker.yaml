@@ -29,7 +29,7 @@ spec:
               app: wikimovie-worker
       containers:
         - name: wikimovie-worker
-          image: "msolimans/wikimovie"
+          image: "public.ecr.aws/q6s1l7f2/wikimovie:latest" #latest should be replaced with exact version
           imagePullPolicy: IfNotPresent
           command:
             - "worker"
