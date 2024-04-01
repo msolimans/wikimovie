@@ -3,12 +3,20 @@ Monitoring
 RateLimiter https://docs.gofiber.io/api/middleware/limiter/
 
 
-# WIKIMedia 
+# WIKIMovie 
 
-WIKIMedia acts as a data lake of movies that are injected by providers. It provides a query api that allows searching by name, year, cast member, or  
+WIKIMovie acts as a data lake of movies that are injected by providers. It provides a query api that allows searching by name, year, cast member, or  
 
 ### Diagram 
 ![Image Alt Text](./image.png)
+
+Notes: 
+- The data store is not specified, noticing heavy reads than writes (which requires indexing and multiple read replicas).  
+
+- Reads are just querying and searching for movies based on different criteria/fields so I was thinking of something like an inverted index (e.g. Apache Solr or ElasticSearch).  inverted index allows fast and efficient search in text fields like cast members, movie name, or genres. it also allows autocomplete, facets (categories with stats), and paging out of the box. 
+
+- While MongoDB can be easier to implement, I don't see any complex queries, transactional or ACID features, Document locking or multi-document transactions but let me know if you would like me to do this with MongoDB specifically.
+
 
 ### Tech stack 
 * Docker compose 
